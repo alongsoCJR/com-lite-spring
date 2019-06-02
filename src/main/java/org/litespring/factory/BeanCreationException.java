@@ -12,7 +12,11 @@ public class BeanCreationException extends BeansException {
         super(msg);
     }
 
-    public BeanCreationException(String msg,Exception e) {
-        super(msg,e);
+    public BeanCreationException(String msg, Throwable e) {
+        super(msg, e);
+    }
+
+    public BeanCreationException(String calssName, String msg, Throwable ex) {
+        super("【 " + calssName + " 】：" + msg, ex);
     }
 }

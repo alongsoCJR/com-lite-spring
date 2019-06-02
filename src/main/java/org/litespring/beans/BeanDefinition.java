@@ -9,11 +9,11 @@ import java.util.List;
  */
 public interface BeanDefinition {
 
-    public static final String SCOPE_DEFAULT ="" ;
+    public static final String SCOPE_DEFAULT = "";
 
-    public static final String SCOPE_SINGLETON ="singleton" ;
+    public static final String SCOPE_SINGLETON = "singleton";
 
-    public static final String SCOPE_PROTOTYPE ="prototype" ;
+    public static final String SCOPE_PROTOTYPE = "prototype";
 
     String getBeanClassName();
 
@@ -32,4 +32,10 @@ public interface BeanDefinition {
     String getID();
 
     boolean hasConstructorArgumentValues();
+
+    Class<?> getBeanClass();
+
+    boolean hasBeanClass();
+
+    Class<?> resolveBeanClass(ClassLoader beanClassLoder) throws ClassNotFoundException;
 }

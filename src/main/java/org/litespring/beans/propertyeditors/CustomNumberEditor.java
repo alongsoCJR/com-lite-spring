@@ -25,6 +25,7 @@ public class CustomNumberEditor extends PropertyEditorSupport {
         }
     }
 
+    @Override
     public void setAsText(String text) throws IllegalArgumentException {
         if (this.allowEmpty && !StringUtils.hasText(text)) {
             this.setValue((Object)null);
@@ -36,6 +37,7 @@ public class CustomNumberEditor extends PropertyEditorSupport {
 
     }
 
+    @Override
     public void setValue(Object value) {
         if (value instanceof Number) {
             super.setValue(NumberUtils.convertNumberToTargetClass((Number)value, this.numberClass));
@@ -45,6 +47,7 @@ public class CustomNumberEditor extends PropertyEditorSupport {
 
     }
 
+    @Override
     public String getAsText() {
         Object value = this.getValue();
         if (value == null) {
