@@ -6,6 +6,7 @@ import org.litespring.beans.factory.support.DefaultBeanFactory;
 import org.litespring.beans.factory.xml.XmlBeanDefinitionReader;
 import org.litespring.context.ApplicationContext;
 import org.litespring.core.io.Resource;
+import org.litespring.factory.NoSuchBeanDefinitionException;
 import org.litespring.util.ClassUtils;
 
 /**
@@ -45,6 +46,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
     /**
      * 为什么不是这里加非空判断，而是get方法加非空判断--具体根据场景去分析
+     *
      * @param beanClassLoder
      */
     public void setBeanClassLoder(ClassLoader beanClassLoder) {
@@ -56,4 +58,10 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
         postProcessor.setBeanFactory(beanFactory);
         beanFactory.addBeanPostProcessor(postProcessor);
     }
+
+
+    public Class<?> getType(String targetBeanName) throws NoSuchBeanDefinitionException {
+        return this.factory.getType(targetBeanName);
+    }
+
 }
