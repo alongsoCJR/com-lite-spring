@@ -33,4 +33,9 @@ public class PetStoreServiceImpl implements IPetStoreService {
         System.out.println("PetStoreServiceImpl.placeOrder");
         MessageTracker.addMsg("PetStoreServiceImpl.placeOrder");
     }
+
+
+    public void placeOrderWithException() throws NullPointerException {
+        throw new NullPointerException();
+    }
 }

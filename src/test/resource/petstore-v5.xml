@@ -14,6 +14,7 @@
 
     <bean id="tx" class="org.litespring.tx.manager.TransactionManager"></bean>
 
+    <!-- 这样子理解，一个是需要切入面应该发生的位置(指定包下面包含placeHolder的方法)，一个是切入面所包含具体执行的方法tx.start,tx.commit,tx.rollback【有执行顺序关系】-->
     <aop:config>
         <aop:aspect ref="tx ">
             <aop:pointcut id="placeHolder"

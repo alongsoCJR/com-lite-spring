@@ -10,10 +10,10 @@ import java.lang.reflect.Method;
 
 /**
  * @author chenjianrong-lhq 2019年06月02日 22:03:43
- * @Description: 切面表达式抽象类测试类
- * @ClassName: PointCurTest
+ * @Description: Test2:切面表达式抽象类测试类，需要切入面应该发生的位置(指定包下面包含placeHolder的方法)
+ * @ClassName: PointcutTest
  */
-public class PointCurTest {
+public class PointcutTest {
 
     @Test
     public void testPointCut() throws NoSuchMethodException {

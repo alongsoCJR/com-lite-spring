@@ -10,6 +10,11 @@ import org.litespring.util.MessageTracker;
 
 import java.util.List;
 
+/**
+ * @Author chenjianrong-lhq
+ * @Description Test1:实现ClassPathXmlApplicationContext是我们的终极目标
+ * @Date 2019-06-10 09:21
+ **/
 public class ApplicationContextV5Test {
 
     @Before
