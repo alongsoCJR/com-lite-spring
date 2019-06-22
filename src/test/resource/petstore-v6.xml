@@ -10,7 +10,7 @@
        http://www.springframework.org/schema/aop
 	   http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 
-    <context:component-scan base-package="org.litespring.dao.v4,org.litespring.service.v5.impl"/>
+    <context:component-scan base-package="org.litespring.dao.v4,org.litespring.service.v6.impl"/>
 
     <bean id="tx" class="org.litespring.tx.manager.TransactionManager"></bean>
 
@@ -18,7 +18,7 @@
     <aop:config>
         <aop:aspect ref="tx">
             <aop:pointcut id="placeHolder"
-                          expression="execution(* org.litespring.service.v5.impl..placeOrder(..))"></aop:pointcut>
+                          expression="execution(* org.litespring.service.v6.impl..placeOrder(..))"></aop:pointcut>
             <aop:before pointcut-ref="placeHolder" method="start"></aop:before>
             <aop:after-returning pointcut-ref="placeHolder" method="commit"></aop:after-returning>
             <aop:after-throwing pointcut-ref="placeHolder" method="rollback"></aop:after-throwing>

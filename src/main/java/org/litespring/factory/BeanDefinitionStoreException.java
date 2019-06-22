@@ -6,4 +6,8 @@ public class BeanDefinitionStoreException extends BeansException {
     public BeanDefinitionStoreException(String msg, Throwable e) {
         super(msg,e);
     }
+
+    public BeanDefinitionStoreException(String msg) {
+        super(msg);
+    }
 }

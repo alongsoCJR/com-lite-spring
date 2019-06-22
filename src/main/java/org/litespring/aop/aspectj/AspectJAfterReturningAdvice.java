@@ -2,6 +2,7 @@ package org.litespring.aop.aspectj;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.litespring.aop.Pointcut;
+import org.litespring.aop.config.AspectInstanceFactory;
 
 import java.lang.reflect.Method;
 
@@ -19,7 +20,7 @@ public class AspectJAfterReturningAdvice extends AbstractAspectAdvice {
         return o;
     }
 
-    public AspectJAfterReturningAdvice(Method adviceMethod, Pointcut pc, Object adviceObject) {
-        super(adviceMethod, pc, adviceObject);
+    public AspectJAfterReturningAdvice(Method adviceMethod, Pointcut pc, AspectInstanceFactory aspectInstanceFactory) {
+        super(adviceMethod, pc, aspectInstanceFactory);
     }
 }

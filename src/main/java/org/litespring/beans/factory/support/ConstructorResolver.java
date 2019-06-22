@@ -4,7 +4,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.litespring.beans.BeanDefinition;
 import org.litespring.beans.ConstructorArgument;
-import org.litespring.beans.factory.config.ConfigableBeanFactory;
 import org.litespring.factory.BeanCreationException;
 
 import java.lang.reflect.Constructor;
@@ -19,9 +18,9 @@ public class ConstructorResolver {
 
     private final Log logger = LogFactory.getLog(getClass());
 
-    private ConfigableBeanFactory beanFactory;
+    private AbstractBeanFactory beanFactory;
 
-    public ConstructorResolver(ConfigableBeanFactory factory) {
+    public ConstructorResolver(AbstractBeanFactory factory) {
         this.beanFactory = factory;
     }
 

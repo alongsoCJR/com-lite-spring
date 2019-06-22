@@ -1,11 +1,12 @@
 package org.litespring.beans.factory.support;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.litespring.beans.BeanDefinition;
 import org.litespring.beans.PropertyValue;
 import org.litespring.beans.TypeConverter;
-import org.litespring.beans.factory.BeanDefinitionRegistry;
+import org.litespring.beans.factory.BeanFactoryAware;
 import org.litespring.beans.factory.config.BeanPostProcessor;
-import org.litespring.beans.factory.config.ConfigableBeanFactory;
 import org.litespring.beans.factory.config.DependencyDescriptor;
 import org.litespring.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.litespring.factory.BeanCreationException;
@@ -25,14 +26,15 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Description:
  * @ClassName: DefaultBeanFactory
  */
-public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
-        implements ConfigableBeanFactory, BeanDefinitionRegistry {
+public class DefaultBeanFactory extends AbstractBeanFactory {
 
     public final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<String, BeanDefinition>();
 
     private List<BeanPostProcessor> beanPostProcessors = new ArrayList<BeanPostProcessor>();
 
     private ClassLoader beanClassLoder;
+
+    protected final Log logger = LogFactory.getLog(getClass());
 
     public DefaultBeanFactory() {
     }
@@ -72,11 +74,44 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
         return bd.getBeanClass();
     }
 
-    private Object createBean(BeanDefinition bd) {
+    protected Object initialzeBean(BeanDefinition bd, Object bean) {
+        invokeAwareMethod(bean);
+
+        //todo 调用bean的init方法，暂时没有实现
+
+        // 创建代理，这里为什么只有不是合成bean，才去校验是否动态代理
+        if (!bd.isSynthetic()) {
+            return applyBeanPostProcessorsAfterInitialization(bean, bd.getID());
+        }
+        return bean;
+    }
+
+    private Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName) {
+        Object result = existingBean;
+        for (BeanPostProcessor beanProcessor : getBeanPostProcessors()) {
+            result = beanProcessor.afterInitialization(result, beanName);
+            if (result == null) {
+                return result;
+            }
+        }
+        return result;
+    }
+
+    private void invokeAwareMethod(Object bean) {
+        if (bean instanceof BeanFactoryAware) {
+            ((BeanFactoryAware) bean).setBeanFactory(this);
+        }
+    }
+
+
+    @Override
+    protected Object createBean(BeanDefinition bd) {
         //bean的实例化
         Object bean = this.instaniateBean(bd);
         //set属性
         populateBean(bd, bean);
+
+        bean = initialzeBean(bd, bean);
 
         return bean;
     }
@@ -181,5 +216,32 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry
                 throw new RuntimeException("can't load class:" + bd.getBeanClassName());
             }
         }
+    }
+
+
+    public List<Object> getBeansByType(Class<?> type) {
+        List<Object> result = new ArrayList<Object>();
+        List<String> beanIds = this.getBeanIdsByType(type);
+        for (String beanId : beanIds) {
+            result.add(this.getBean(beanId));
+        }
+        return result;
+    }
+
+    private List<String> getBeanIdsByType(Class<?> type) {
+        List<String> beanIds = new ArrayList<String>();
+        for (String beanName : this.beanDefinitionMap.keySet()) {
+            Class<?> beanClass = null;
+            try {
+                beanClass = this.getType(beanName);
+            } catch (Exception e) {
+                logger.warn("can't load class for bean :" + beanName + ",skip it!");
+                continue;
+            }
+            if (beanClass != null && type.isAssignableFrom(beanClass)) {
+                beanIds.add(beanName);
+            }
+        }
+        return beanIds;
     }
 }

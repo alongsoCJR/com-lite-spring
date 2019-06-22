@@ -24,5 +24,4 @@ public class FileSystemXmlApplicationContext extends AbstractApplicationContext 
         return new FileSystemResource(path);
     }
 
-
 }

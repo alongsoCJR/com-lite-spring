@@ -8,7 +8,9 @@ import org.junit.Test;
 import org.litespring.aop.aspectj.AspectJAfterReturningAdvice;
 import org.litespring.aop.aspectj.AspectJAfterThrowingAdvice;
 import org.litespring.aop.aspectj.AspectJBeforeAdvice;
+import org.litespring.aop.config.AspectInstanceFactory;
 import org.litespring.aop.framework.ReflectiveMethodInvocation;
+import org.litespring.factory.BeanFactory;
 import org.litespring.service.v5.impl.PetStoreServiceImpl;
 import org.litespring.tx.manager.TransactionManager;
 import org.litespring.util.MessageTracker;
@@ -22,11 +24,9 @@ import java.util.List;
  * @Description: Test4:proceed方法使用了递归,一个完美的方法，避开了before与after放置顺序的问题
  * @ClassName: ReflectiveMethodInvocationTest
  */
-public class ReflectiveMethodInvocationTest {
+public class ReflectiveMethodInvocationTest extends AbstraceV5Test {
 
     PetStoreServiceImpl petStoreService;
-
-    TransactionManager tx;
 
     AspectJBeforeAdvice beforeAdvice;
 
@@ -34,20 +34,28 @@ public class ReflectiveMethodInvocationTest {
 
     AspectJAfterThrowingAdvice afterThrowingAdvice;
 
+    AspectInstanceFactory aspectInstanceFactory;
+
+    BeanFactory beanFactory;
+
 
     @Before
     public void setUp() throws NoSuchMethodException {
         petStoreService = new PetStoreServiceImpl();
 
-        tx = new TransactionManager();
-
         MessageTracker.clearMsgs();
 
-        beforeAdvice = new AspectJBeforeAdvice(TransactionManager.class.getMethod("start"), null, tx);
+        beanFactory = super.getBeanFactory("petstore-v5.xml");
 
-        afterReturningAdvice = new AspectJAfterReturningAdvice(TransactionManager.class.getMethod("commit"), null, tx);
+        aspectInstanceFactory = super.getAspectInstanceFactory("tx");
 
-        afterThrowingAdvice = new AspectJAfterThrowingAdvice(TransactionManager.class.getMethod("rollback"), null, tx);
+        aspectInstanceFactory.setBeanFactory(beanFactory);
+
+        beforeAdvice = new AspectJBeforeAdvice(TransactionManager.class.getMethod("start"), null, aspectInstanceFactory);
+
+        afterReturningAdvice = new AspectJAfterReturningAdvice(TransactionManager.class.getMethod("commit"), null, aspectInstanceFactory);
+
+        afterThrowingAdvice = new AspectJAfterThrowingAdvice(TransactionManager.class.getMethod("rollback"), null, aspectInstanceFactory);
     }
 
 

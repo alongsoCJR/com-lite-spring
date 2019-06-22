@@ -4,5 +4,5 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean id="petStore" class="org.litespring.service.v1.impl.PetStoreServiceImpl"></bean>
-    <bean id="invalidBean" class="org.litespring.factory.BeanCreationException"></bean>
+    <bean id="invalidBean" class="xxx.xxxx"></bean>
 </beans>

@@ -1,7 +1,8 @@
-package org.litespring.service.v5.impl;
+package org.litespring.service.v6.impl;
 
 import org.litespring.dao.v4.AccountDao;
 import org.litespring.dao.v4.ItemDao;
+import org.litespring.service.v6.IPetStoreService;
 import org.litespring.stereotype.Autowired;
 import org.litespring.stereotype.Component;
 import org.litespring.util.MessageTracker;
@@ -12,7 +13,7 @@ import org.litespring.util.MessageTracker;
  * @ClassName: PetStoreServiceImpl
  */
 @Component(value = "petStore")
-public class PetStoreServiceImpl {
+public class PetStoreServiceImpl implements IPetStoreService {
 
     @Autowired
     private AccountDao accountDao;
